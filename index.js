@@ -25,7 +25,10 @@ app.use(bodyParser.json());
 app.use(upload.array());
 
 //router
-app.use('/', router);
+app.use('/api/v1.0.0/', router);
+app.use('', (req, res) => {
+    res.status(404).json({ err: "The API end point you requested doesn't exist." })
+})
 //static file serve
 app.use(express.static('public'));
 
