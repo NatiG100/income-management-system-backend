@@ -21,9 +21,17 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
+    },
+    company: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Company',
+        required: [true, 'Please provide Company ID.'],
     }
 });
 
+userSchema.pre(/^find*/, function () {
+    this.populate('company');
+})
 
 userSchema.pre('save', async function (next) {
     try {

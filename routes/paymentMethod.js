@@ -10,7 +10,7 @@ const {
 
 paymentRouter.post('/', createMethod);
 paymentRouter.get('/:id', readMethod);
-paymentRouter.get('/all/company-id/', readAllMethods);
+paymentRouter.get('/all/:company_id', readAllMethods);
 paymentRouter.patch('/:id', updateMethod);
 paymentRouter.delete('/:id', deleteMethod);
 
