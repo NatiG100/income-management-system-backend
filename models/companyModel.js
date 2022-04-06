@@ -8,7 +8,7 @@ const companySchema = new mongoose.Schema({
     code: {
         type: String,
         required: [true, "Please provide a code for the company."],
-        unique: [true, "A company already exists with this code."],
+        unique: true,
     },
     description: {
         type: String,

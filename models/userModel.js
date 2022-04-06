@@ -24,11 +24,12 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-userSchema.pre('save', function (next) {
-    if (this.password.lenght <= 6) {
-        next(new Error("The password must contain atleast 6 characters."));
-    }
+
+userSchema.pre('save', async function (next) {
     try {
+        if (this.password?.lenght <= 6) {
+            next(new Error("The password must contain atleast 6 characters."))
+        }
         const salt = await bcrypt.genSalt(10);
         this.password = await bcrypt.hash(this.password, salt);
         next();
@@ -36,6 +37,7 @@ userSchema.pre('save', function (next) {
         next(err);
     }
 });
+
 
 const User = mongoose.model('User', userSchema);
 

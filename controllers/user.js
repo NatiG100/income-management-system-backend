@@ -1,23 +1,70 @@
 const User = require("../models/userModel");
 
-module.exports.createUser = async (req, res) => {
+module.exports.createUser = async (req, res, next) => {
     try {
         const user = new User(req.body);
-        user.save();
+        await user.save();
+        user.password = undefined;
+        res.status(200).json(user);
     } catch (err) {
-        next(err);
+        res.status(400).json(err);
     }
 }
-module.exports.readAllUsers = (req, res) => {
-    res.send('All Users');
+module.exports.readAllUsers = async (req, res) => {
+    try {
+        const users = await User.find().select('-password');
+        res.status(200).json(users);
+    } catch (err) {
+        res.status(400).json(err);
+    }
 }
-module.exports.readUser = (req, res) => {
-    res.send('A User.')
+module.exports.readUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id).select('-password');
+        res.status(200).json(user);
+    } catch (err) {
+        res.status(400).json(err);
+    }
 }
 
-module.exports.updateUser = (req, res) => {
-    res.send('User edited');
+module.exports.updateUser = async (req, res) => {
+    try {
+        let user = await User.findById(req.params.id);
+        if (!user) {
+            res.status(404).json({
+                err: "No User exists with this id.",
+            });
+            return;
+        }
+        for (key in req.body) {
+            user[key] = req.body[key];
+        }
+        await user.save();
+        res.status(200).json(user);
+    } catch (err) {
+        res.status(400).json({
+            err: err.message,
+        });
+    }
 }
-module.exports.deleteUser = (req, res) => {
-    res.send('User deleted');
+module.exports.deleteUser = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const user = await User.findOne({ _id: id });
+        await User.deleteOne({ _id: id });
+        if (!user) {
+            res.status(404).json({
+                err: "No user exists with this id.",
+            });
+            return;
+        }
+        res.status(200).json(
+            user,
+        );
+    } catch (err) {
+        // console.log(err.msg);
+        res.status(400).json({
+            err: err.message,
+        });
+    }
 }
