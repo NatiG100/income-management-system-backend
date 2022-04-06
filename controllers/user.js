@@ -1,5 +1,12 @@
-module.exports.createUser = (req, res) => {
-    res.send('User created.')
+const User = require("../models/userModel");
+
+module.exports.createUser = async (req, res) => {
+    try {
+        const user = new User(req.body);
+        user.save();
+    } catch (err) {
+        next(err);
+    }
 }
 module.exports.readAllUsers = (req, res) => {
     res.send('All Users');
