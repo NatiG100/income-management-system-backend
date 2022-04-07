@@ -3,6 +3,7 @@ const Payment = require("../models/paymentModel");
 module.exports.createMethod = async (req, res) => {
     try {
         const createdMethod = new Payment(req.body);
+        createdMethod.company = req.session.user.company?._id;
         await createdMethod.save();
         res.status(200).json({
             createdMethod

@@ -7,7 +7,7 @@ module.exports.createUser = async (req, res, next) => {
         user.password = undefined;
         res.status(200).json(user);
     } catch (err) {
-        res.status(400).json(err);
+        res.status(400).json({ err: err.message });
     }
 }
 module.exports.readAllUsers = async (req, res) => {
@@ -15,7 +15,7 @@ module.exports.readAllUsers = async (req, res) => {
         const users = await User.find().select('-password');
         res.status(200).json(users);
     } catch (err) {
-        res.status(400).json(err);
+        res.status(400).json({ err: err.message });
     }
 }
 module.exports.readUser = async (req, res) => {
@@ -23,7 +23,7 @@ module.exports.readUser = async (req, res) => {
         const user = await User.findById(req.params.id).select('-password');
         res.status(200).json(user);
     } catch (err) {
-        res.status(400).json(err);
+        res.status(400).json({ err: err.message });
     }
 }
 

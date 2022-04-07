@@ -7,11 +7,12 @@ const {
     updateMethod,
     deleteMethod
 } = require("../controllers/paymentMethod");
+const authorized = require('../utils/authorize');
 
-paymentRouter.post('/', createMethod);
+paymentRouter.post('/', authorized, createMethod);
 paymentRouter.get('/:id', readMethod);
 paymentRouter.get('/all/:company_id', readAllMethods);
-paymentRouter.patch('/:id', updateMethod);
-paymentRouter.delete('/:id', deleteMethod);
+paymentRouter.patch('/:id', authorized, updateMethod);
+paymentRouter.delete('/:id', authorized, deleteMethod);
 
 module.exports = paymentRouter;

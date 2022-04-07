@@ -4,9 +4,9 @@ module.exports.createCompany = async (req, res) => {
     try {
         const createdCompany = new Company(req.body);
         await createdCompany.save();
-        res.status(200).json({
+        res.status(200).json(
             createdCompany
-        });
+        );
     } catch (err) {
         res.status(400).json({
             err: err.message,
