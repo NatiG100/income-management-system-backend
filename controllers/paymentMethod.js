@@ -75,6 +75,11 @@ module.exports.deleteMethod = async (req, res) => {
     const id = req.params.id;
     try {
         const payment = await Payment.findOne({ _id: id });
+        if (!payment) {
+            res.status(400).json({
+                err: "No payment method with this id!",
+            });
+        }
         await Payment.deleteOne({ _id: id });
         if (!payment) {
             res.status(404).json({
