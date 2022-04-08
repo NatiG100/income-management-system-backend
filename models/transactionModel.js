@@ -17,6 +17,11 @@ const transactionSchema = new mongoose.Schema({
         type: String,
         trim: true,
         required: [true, 'Please provide the name of the creditor.']
+    },
+    company: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Company',
+        required: [true, 'Please provide an ID for the company being paied.'],
     }
 });
 
